@@ -1,10 +1,16 @@
 pipeline{
     tools{
-        jdk 'myjava'
+        jdk 'myjdk'
         maven 'mymaven'
     }
     agent none
     stages{
+        stage('Checkout'){
+            agent any
+            steps{
+                git 'https://github.com/vpractice/game-of-life.git'
+            }
+        }
         stage('Compile'){
             agent any
             steps{
@@ -22,10 +28,11 @@ pipeline{
                 }
             }
         }
-        stage('Packae'){
-            agent any
+        stage('Package'){
+            agent {label 'Win_Node'}
             steps{
-                sh 'mvn package'
+                git 'https://github.com/vpractice/game-of-life.git'
+                bat 'mvn package'
             }
         }
     }
