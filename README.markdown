@@ -1,7 +1,7 @@
 This is a simple demonstration application used in the [Jenkins: The Definitive Guide](http://wakaleo.com/books/jenkins-the-definitive-guide)dffdsfdf
-by itechnets.com by vpractice.pk
-## Building the project
 
+## Building the project
+change on 18-06-2021
 The project is a simple multi-module Maven project. To build the whole project, just run `mvn install` from the root directory.
 
 ## Running the game
