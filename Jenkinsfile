@@ -5,12 +5,6 @@ pipeline{
     }
     agent none
     stages{
-        stage('Checkout'){
-            agent any
-            steps{
-                git 'https://github.com/vpractice/game-of-life.git'
-            }
-        }
         stage('Compile'){
             agent{label 'centos83'}
             steps{
