@@ -1,52 +1,53 @@
 pipeline{
     tools{
-        jdk 'jdk852'
-        maven 'maven381'
+        jdk 'myjdk'
+        maven 'mymaven'
     }
     agent none
     stages{
-        stage('Compile'){
-            agent{label 'linux_slave02'}
+        stage('Checkout'){
+            agent any
             steps{
-                sh 'mvn compile'
-                }
-        }
-        stage('test'){
-            agent{label 'linux_slave02'}
-            steps{
-                sh 'mvn test'
+                git 'https://github.com/vpractice/game-of-life.git'
             }
-            post{
-                always{
-                    junit 'gameoflife-web/target/surefire-reports/*.xml'
-                }
-                
+        }
+        stage('Compile'){
+            agent{label 'centos83'}
+            steps{
+                git 'https://github.com/vpractice/game-of-life.git'
+                sh 'mvn compile'
+            }
+        }
+        stage('Test'){
+            agent{label 'master'}
+            steps{
+                git 'https://github.com/vpractice/game-of-life.git'
+                sh 'mvn test'
             }
         }
         stage('Package'){
-            agent{label 'linux_slave02'}
+            agent{label 'win2k16slave'}
             steps{
-                sh 'mvn package'
+                git 'https://github.com/vpractice/game-of-life.git'
+                bat 'mvn package'
             }
         }
         stage('Deploy'){
             agent{label 'master'}
             steps{
                 git 'https://github.com/vpractice/game-of-life.git'
-                sh '''
-                    rm -rf jenkins-dimages
-                    mkdir jenkins-dimages
-                    cd jenkins-dimages
-                    cp /var/lib/jenkins/workspace/GOL-CICDPipeline/gameoflife-web/target/gameoflife.war .
-                    touch dockerfile
-                    echo "From tomcat" >> dockerfile
-                    echo "ADD gameoflife.war /usr/local/tomcat/webapps" >> dockerfile
-                    echo CMD '"catalina.sh"' '"run"' >> dockerfile
-                    echo "EXPOSE 8080" >> dockerfile
-                    sudo docker build -t golimage2:$BUILD_NUMBER .
-                    sudo docker run -itd -P golimage2:$BUILD_NUMBER
-                    '''
+                sh '''rm -rf jenkins-dimages
+                mkdir jenkins-dimages
+                cd jenkins-dimages
+                cp /var/lib/jenkins/workspace/GOL-CICDPipeline/gameoflife-web/target/gameoflife.war .
+                echo "From tomcat" >> dockerfile
+                echo "ADD gameoflife.war /usr/local/tomcat/webapps" >> dockerfile
+                echo CMD '"catalina.sh"' '"run"' >> dockerfile
+                echo "EXPOSE 8080" >> dockerfile
+                sudo docker build -t golimagenew:$BUILD_NUMBER .
+                sudo docker run -itd -P golimagenew:$BUILD_NUMBER'''
             }
         }
+        
     }
 }
