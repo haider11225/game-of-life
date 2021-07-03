@@ -23,7 +23,7 @@ pipeline{
             agent{label 'master'}
             steps{
                 git 'https://github.com/vpractice/game-of-life.git'
-                bat 'mvn package'
+                sh 'mvn package'
             }
         }
         stage('Deploy'){
