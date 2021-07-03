@@ -6,7 +6,7 @@ pipeline{
     agent none
     stages{
         stage('Compile'){
-            agent{label 'centos83'}
+            agent{label 'master'}
             steps{
                 git 'https://github.com/vpractice/game-of-life.git'
                 sh 'mvn compile'
@@ -20,7 +20,7 @@ pipeline{
             }
         }
         stage('Package'){
-            agent{label 'win2k16slave'}
+            agent{label 'master'}
             steps{
                 git 'https://github.com/vpractice/game-of-life.git'
                 bat 'mvn package'
