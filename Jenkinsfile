@@ -28,9 +28,6 @@ pipeline{
         }
         stage('Deploy'){
             agent any
-            when {
-                branch 'master'
-            }
             steps{
                 git 'https://github.com/vpractice/game-of-life.git'
                 sh '''rm -rf jenkins-dimages
