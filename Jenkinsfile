@@ -6,28 +6,28 @@ pipeline{
     agent none
     stages{
         stage('Compile'){
-            agent{label 'master'}
+            agent any
             steps{
                 git 'https://github.com/vpractice/game-of-life.git'
                 sh 'mvn compile'
             }
         }
         stage('Test'){
-            agent{label 'master'}
+            agent any
             steps{
                 git 'https://github.com/vpractice/game-of-life.git'
                 sh 'mvn test'
             }
         }
         stage('Package'){
-            agent{label 'master'}
+            agent any
             steps{
                 git 'https://github.com/vpractice/game-of-life.git'
                 sh 'mvn package'
             }
         }
         stage('Deploy'){
-            agent{label 'master'}
+            agent any
             when {
                 branch 'master'
             }
