@@ -1,7 +1,7 @@
 pipeline{
     tools{
-        jdk 'jdk852'
-        maven 'maven381'
+        jdk 'jdk8u152'
+        maven 'maven385'
     }
     agent none
     stages{
